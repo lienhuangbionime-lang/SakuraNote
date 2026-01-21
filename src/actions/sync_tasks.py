@@ -1,45 +1,56 @@
+# src/actions/sync_tasks.py
 import os
 import json
 import glob
 import requests
 
-# 這是你的 Zapier Webhook URL (需在 Zapier 建立一個 "Catch Hook")
 ZAPIER_TASK_WEBHOOK = os.getenv("ZAPIER_TASK_WEBHOOK") 
 
 def sync_tasks_to_cloud():
-    # 1. 讀取 Inbox 裡剛生成的 JSON (還沒被壓縮的)
     inbox_files = glob.glob("data/inbox/*.json")
-    
     tasks_to_sync = []
     
     for filepath in inbox_files:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            
-        # 2. 提取待辦事項 (根據你的 Dual-Track 結構)
-        # 假設 Gemini 分析結果在 analysis.project_data.open_nodes 或 summary
-        analysis = data.get('analysis', {})
-        p_data = analysis.get('project_data', {})
-        
-        # 策略 A: 抓取 Open Nodes
-        open_nodes = p_data.get('open_nodes', '')
-        if open_nodes and open_nodes != 'None':
-            # 簡單清洗：如果是條列式，拆開
-            nodes = [n.strip('- ').strip() for n in open_nodes.split('\n') if n.strip()]
-            for node in nodes:
-                tasks_to_sync.append({
-                    "title": f"[LifeOS] {node}",
-                    "notes": f"Source: {data.get('date')} Log\nProject: {p_data.get('candidates', ['Unknown'])[0]}",
-                    "due": "tomorrow" # 預設明天
-                })
-
-        # 策略 B: 抓取 Life MIT (Most Important Thing)
-        # 如果你有在 analysis 裡特別提取 MIT
-        
-    # 3. 發送給 Zapier
-    if tasks_to_sync and ZAPIER_TASK_WEBHOOK:
-        print(f"🚀 Syncing {len(tasks_to_sync)} tasks to Google Tasks...")
         try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            analysis = data.get('analysis', {})
+            date_str = data.get('date', 'Unknown Date')
+            
+            # --- [修改處]：優先讀取 AI 明確提取的 action_items ---
+            ai_actions = analysis.get('action_items', [])
+            
+            if ai_actions:
+                print(f"✅ Found {len(ai_actions)} AI-extracted tasks in {filepath}")
+                for item in ai_actions:
+                    # 相容性處理：如果 AI 回傳字串而非物件
+                    if isinstance(item, str):
+                        task_title = item
+                        priority = "Med"
+                        context = ""
+                    else:
+                        task_title = item.get('task', 'Untitled Task')
+                        priority = item.get('priority', 'Med')
+                        context = item.get('context', '')
+
+                    tasks_to_sync.append({
+                        "title": f"[LifeOS] {task_title}",
+                        "notes": f"📅 {date_str} | 🔥 {priority}\nContext: {context}",
+                        "due": "tomorrow"
+                    })
+            
+            # (可選) 保留 open_nodes 作為備案，但建議移除以避免重複
+            # 原本的 Open Nodes 邏輯已刪除，確保「只聽 AI 的」
+
+        except Exception as e:
+            print(f"Error reading {filepath}: {e}")
+        
+    if tasks_to_sync and ZAPIER_TASK_WEBHOOK:
+        print(f"🚀 Syncing {len(tasks_to_sync)} tasks to Zapier...")
+        try:
+            # 這裡要注意 Zapier Webhook 是否接受 "tasks" 陣列
+            # 如果你的 Zapier 設定是 "Catch Hook"，它通常可以解析 JSON 陣列
             requests.post(ZAPIER_TASK_WEBHOOK, json={"tasks": tasks_to_sync})
             print("✅ Sync request sent.")
         except Exception as e:

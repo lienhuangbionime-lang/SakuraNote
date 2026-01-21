@@ -3,6 +3,7 @@ import os
 import json
 import glob
 import requests
+import time
 
 ZAPIER_TASK_WEBHOOK = os.getenv("ZAPIER_TASK_WEBHOOK") 
 
@@ -18,13 +19,13 @@ def sync_tasks_to_cloud():
             analysis = data.get('analysis', {})
             date_str = data.get('date', 'Unknown Date')
             
-            # --- [修改處]：優先讀取 AI 明確提取的 action_items ---
+            # 1. 讀取 AI 提取的任務
             ai_actions = analysis.get('action_items', [])
             
             if ai_actions:
-                print(f"✅ Found {len(ai_actions)} AI-extracted tasks in {filepath}")
+                print(f"✅ Found {len(ai_actions)} tasks in {filepath}")
                 for item in ai_actions:
-                    # 相容性處理：如果 AI 回傳字串而非物件
+                    # 相容性處理
                     if isinstance(item, str):
                         task_title = item
                         priority = "Med"
@@ -39,22 +40,23 @@ def sync_tasks_to_cloud():
                         "notes": f"📅 {date_str} | 🔥 {priority}\nContext: {context}",
                         "due": "tomorrow"
                     })
-            
-            # (可選) 保留 open_nodes 作為備案，但建議移除以避免重複
-            # 原本的 Open Nodes 邏輯已刪除，確保「只聽 AI 的」
 
         except Exception as e:
             print(f"Error reading {filepath}: {e}")
         
+    # 2. [優化] 迴圈發送 (確保 Zapier 每一條都收到)
     if tasks_to_sync and ZAPIER_TASK_WEBHOOK:
         print(f"🚀 Syncing {len(tasks_to_sync)} tasks to Zapier...")
-        try:
-            # 這裡要注意 Zapier Webhook 是否接受 "tasks" 陣列
-            # 如果你的 Zapier 設定是 "Catch Hook"，它通常可以解析 JSON 陣列
-            requests.post(ZAPIER_TASK_WEBHOOK, json={"tasks": tasks_to_sync})
-            print("✅ Sync request sent.")
-        except Exception as e:
-            print(f"❌ Sync failed: {e}")
+        
+        for i, task in enumerate(tasks_to_sync):
+            try:
+                # 直接發送單一任務物件，Zapier 比較好讀取
+                requests.post(ZAPIER_TASK_WEBHOOK, json=task)
+                print(f"✅ Sent ({i+1}/{len(tasks_to_sync)}): {task['title']}")
+                time.sleep(1) # 休息 1 秒，避免 Zapier 覺得我們是機器人攻擊
+            except Exception as e:
+                print(f"❌ Send failed: {e}")
+                
     else:
         print("No tasks found or Webhook not set.")
 

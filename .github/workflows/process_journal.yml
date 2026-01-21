@@ -9,50 +9,53 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  neural_pipeline:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout content
-      uses: actions/checkout@v3
+      - name: Checkout content
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas pyarrow python-frontmatter requests
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas pyarrow python-frontmatter google-generativeai requests
 
-    # 1. 思考與寫入 (Inbox)
-    - name: Run Neural Classifier (Gemini)
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        JOURNAL_TEXT: ${{ github.event.client_payload.text }}
-      run: python src/actions/process_inbox.py
+      # 1. 核心處理 (Gemini 分析 -> 生成 Inbox 檔案)
+      - name: 🧠 Neural Intake (Gemini)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          JOURNAL_TEXT: ${{ github.event.client_payload.text }}
+        run: python src/actions/process_inbox.py
 
-    # 2. 執行閉環 (Tasks) - NEW
-    - name: Sync Tasks to Google
-      env:
-        ZAPIER_TASK_WEBHOOK: ${{ secrets.ZAPIER_TASK_WEBHOOK }}
-      run: python src/actions/sync_tasks.py
+      # 2. 自動分類 (Project/Life 分流)
+      - name: 🗂️ Auto-Classification
+        run: python src/actions/classify_inbox.py
 
-    # 3. 專案分流 (Classification)
-    - name: Run Dual-Track Splitter
-      run: python src/actions/classify_inbox.py
+      # 3. 任務同步 (傳送至 Zapier -> Google Tasks)
+      - name: ✅ Sync Tasks to Google
+        env:
+          ZAPIER_TASK_WEBHOOK: ${{ secrets.ZAPIER_TASK_WEBHOOK }}
+        run: python src/actions/sync_tasks.py
 
-    # 4. 壓縮與歸檔 (Compaction)
-    - name: Run compaction script
-      run: python src/actions/compact_inbox.py
+      # 4. 報告生成 (可選，每次跑或設排程)
+      - name: 📊 Generate Project Status
+        run: python src/actions/generate_report.py
 
-    # 5. 生成戰情報告 (Reporting) - NEW
-    - name: Generate Project Report
-      run: python src/actions/generate_report.py
+      # 5. 資料壓縮與清理 (Inbox -> Archive)
+      - name: 🗜️ Compaction & Cleanup
+        run: python src/actions/compact_inbox.py
 
-    # 6. 一次性提交所有變更
-    - name: Commit and push changes
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: "🤖 LifeOS: Processed, Synced & Reported"
-        file_pattern: "data/*"
+      # 6. 提交所有變更
+      - name: Commit Neural State
+        run: |
+          git config --global user.name "LifeOS Bot"
+          git config --global user.email "bot@lifeos.ai"
+          git add data/
+          git commit -m "🧠 Neural Process Complete: ${{ github.event.client_payload.metadata.date }}" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push

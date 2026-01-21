@@ -18,8 +18,8 @@ def analyze_dual_track_entry(raw_text):
     """
     model = genai.GenerativeModel('gemini-1.5-flash') # Flash 模型速度快且便宜
 
-    # 核心 Prompt：教導 AI 如何閱讀你的 Dual-Track 格式
-prompt = f"""
+    # [修正 1]：縮排修正 (這裡必須縮排，因為它在函式內)
+    prompt = f"""
     You are the parser for LifeOS. Convert the raw "Dual-Track" journal into structured JSON.
     
     ### Input Text:
@@ -79,11 +79,11 @@ prompt = f"""
         analysis = {
             "mood": 5, "focus": 5, "energy": 5, 
             "tags": [], "summary": "AI Parse Error", 
-            "sections": {}
+            "sections": {},
+            "action_items": [] # 確保有這個欄位
         }
 
-    # 生成向量 (Embedding) 用於未來的 RAG 搜尋
-    # 如果 Embedding API 配額不足，這一步可以 try-except 包起來
+    # 生成向量 (Embedding)
     try:
         embedding_result = genai.embed_content(
             model="models/embedding-001",
@@ -114,7 +114,7 @@ def save_to_inbox(raw_text, analysis, embedding):
     frontend_data = {
         "uuid": entry_id,
         "date": date_str,
-        "raw_text": raw_text, # 保存原始 Markdown
+        "raw_text": raw_text, 
         "analysis": {
             "date": date_str,
             "mood": analysis.get("mood", 5),
@@ -122,17 +122,19 @@ def save_to_inbox(raw_text, analysis, embedding):
             "energy": analysis.get("energy", 5),
             "tags": analysis.get("tags", []),
             "summary": analysis.get("summary", ""),
-            "sections": analysis.get("sections", {})
+            "sections": analysis.get("sections", {}),
+            # [修正 2] 重要：必須將 AI 抓到的 action_items 存入 JSON
+            "action_items": analysis.get("action_items", []) 
         },
-        "embedding": embedding # 向量數據
+        "embedding": embedding 
     }
 
-    # 2. 寫入 Sidecar JSON (GitHub Sync 會抓取這個檔案)
+    # 2. 寫入 Sidecar JSON
     os.makedirs("data/inbox", exist_ok=True)
     with open(f"{filename_base}.json", "w", encoding="utf-8") as f:
         json.dump(frontend_data, f, ensure_ascii=False, indent=2)
 
-    # 3. 寫入 Markdown (作為人類可讀備份)
+    # 3. 寫入 Markdown
     post = frontmatter.Post(raw_text, **{
         "uuid": entry_id,
         "mood": analysis.get("mood"),
@@ -144,12 +146,10 @@ def save_to_inbox(raw_text, analysis, embedding):
     print(f"✅ Created Inbox Entry: {filename_base}.json")
 
 if __name__ == "__main__":
-    # 從 GitHub Action 的環境變數讀取 Zapier 傳來的文字
     journal_text = os.getenv("JOURNAL_TEXT")
     
     if not journal_text:
         print("⚠️ No text provided via JOURNAL_TEXT env var.")
-        # 本地測試用，若直接執行此腳本可放假資料
         exit(1)
     
     analysis_data, vector_data = analyze_dual_track_entry(journal_text)

@@ -3,101 +3,86 @@ import json
 import re
 import glob
 import datetime
+import requests # 需要在 process_journal.yml 安裝 requests
 
 # 定義路徑
 INBOX_DIR = "data/inbox"
 PROJECTS_DIR = "data/projects"
 LIFE_DIR = "data/life"
-STATUS_FILE = "data/status/latest_actions.json" # [NEW] Nudge 用的資料來源
+
+# [NEW] Zapier Webhook URL (從 Secrets 讀取)
+ZAPIER_TASK_WEBHOOK = os.getenv("ZAPIER_TASK_WEBHOOK")
+
+def extract_tasks(content):
+    """
+    從日記內容中抓取待辦事項
+    支援格式：
+    1. Tomorrow's MIT:
+       - 任務 A
+    2. [ ] 任務 B
+    """
+    tasks = []
+    
+    # 模式 A: 抓取 Tomorrow's MIT 區塊
+    mit_match = re.search(r"Tomorrow's MIT.*?(\n(?:[-*].*?|\s*)*)(?=\n#|\n\n|$)", content, re.IGNORECASE | re.DOTALL)
+    if mit_match:
+        lines = mit_match.group(1).strip().split('\n')
+        for line in lines:
+            clean_line = re.sub(r"^[-*]\s*", "", line).strip()
+            if clean_line:
+                tasks.append(clean_line)
+
+    # 模式 B: 抓取未完成的 Checkbox [ ]
+    checkboxes = re.findall(r"-\s*\[\s*\]\s*(.*)", content)
+    tasks.extend(checkboxes)
+
+    return list(set(tasks)) # 去重
+
+def send_to_zapier(tasks, date):
+    if not ZAPIER_TASK_WEBHOOK:
+        print("⚠️ No ZAPIER_TASK_WEBHOOK configured. Skipping task sync.")
+        return
+
+    for task in tasks:
+        try:
+            payload = {"title": task, "date": date, "source": "LifeOS"}
+            requests.post(ZAPIER_TASK_WEBHOOK, json=payload)
+            print(f"🚀 Sent to Zapier: {task}")
+        except Exception as e:
+            print(f"❌ Failed to send task: {e}")
 
 def parse_dual_track(raw_text):
-    """
-    手術刀：將日記文本拆解為 Project 與 Life 兩部分，並提取 Next Steps
-    """
-    # 1. 切割 A. Project Log
-    project_match = re.search(r'## A\. Project Log.*?([\s\S]*?)(?=## B\. Life Log|$)', raw_text, re.IGNORECASE)
-    project_content = project_match.group(1).strip() if project_match else ""
-
-    # 2. 切割 B. Life Log
-    life_match = re.search(r'## B\. Life Log.*?([\s\S]*?)(?=## Graph Seeds|$)', raw_text, re.IGNORECASE)
-    life_content = life_match.group(1).strip() if life_match else ""
-
-    # 3. 提取 Project Tags
-    tags = re.findall(r'#([\w\u4e00-\u9fa5]+)', project_content)
-    valid_project_tags = [t for t in tags if t not in ['LifeOS', 'DualMemory'] or t == 'LifeOS'] 
-    primary_project = valid_project_tags[0] if valid_project_tags else "Uncategorized"
-
-    # [NEW] 4. 提取 Tomorrow's MIT (下一步行動)
-    # 尋找 "Tomorrow's MIT" 或 "Next Steps" 區塊
-    mit_match = re.search(r"(?:Tomorrow’s MIT|Next Steps).*?[:：]?\s*\n([\s\S]*?)(?=\n###|\n##|$)", project_content, re.IGNORECASE)
-    next_actions = []
-    if mit_match:
-        # 抓取 bullet points
-        lines = mit_match.group(1).strip().split('\n')
-        next_actions = [line.strip().replace('- ', '').replace('* ', '') for line in lines if line.strip().startswith(('- ', '* '))]
-
+    # ... (保留你原本的切割邏輯) ...
+    # 1. 切割 A. Project Log ...
+    # 2. 切割 B. Life Log ...
+    # 3. 提取 Tags ...
+    
+    # 這裡為了簡化，直接回傳你原本的 dict 結構
+    # (請將你原本的 parse_dual_track 函數內容完整保留)
+    # ...
     return {
-        "project": {
-            "name": primary_project,
-            "content": project_content,
-            "next_actions": next_actions
-        },
-        "life": {
-            "content": life_content
-        }
+        "project": { "name": "LifeOS", "content": "..." }, # 範例
+        "life": { "content": "..." }
     }
 
 def process_inbox_files():
-    os.makedirs(PROJECTS_DIR, exist_ok=True)
-    os.makedirs(LIFE_DIR, exist_ok=True)
-    os.makedirs(os.path.dirname(STATUS_FILE), exist_ok=True)
-
-    files = glob.glob(os.path.join(INBOX_DIR, "*.json"))
+    # ... (保留原本的目錄建立與讀取邏輯) ...
     
-    actions_report = {} # 用來收集所有日記的下一步
-
-    for filepath in files:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            
-        # 兼容欄位讀取
-        raw_text = data.get('raw_text', '') or data.get('note', '') 
-        # 從 analysis.date 或 raw data 取得日期
-        date = data.get('analysis', {}).get('date') or data.get('date') or datetime.datetime.now().strftime('%Y-%m-%d')
+    # 在迴圈內：
+    # for filepath in files:
+        # ... (讀取 data, raw_text) ...
         
-        if not raw_text:
-            continue
-            
-        parsed = parse_dual_track(raw_text)
-        
-        # --- 路由 1: 專案日誌 ---
-        project_name = parsed['project']['name']
-        project_file = os.path.join(PROJECTS_DIR, f"{project_name}.md")
-        
-        with open(project_file, 'a', encoding='utf-8') as pf:
-            entry_block = f"\n\n### {date} Log\n{parsed['project']['content']}\n\n---"
-            pf.write(entry_block)
-            
-        print(f"✅ Routed Project Log to: {project_file}")
+        # 1. 執行切割與存檔 (原本的邏輯)
+        # parsed = parse_dual_track(raw_text)
+        # ... (寫入 Project MD) ...
+        # ... (寫入 Life MD) ...
 
-        # --- 路由 2: 生活訊號 ---
-        life_file = os.path.join(LIFE_DIR, f"life_log_{date[:7]}.md") 
-        with open(life_file, 'a', encoding='utf-8') as lf:
-            entry_block = f"\n\n### {date}\n{parsed['life']['content']}\n\n---"
-            lf.write(entry_block)
-
-        # --- [NEW] 收集下一步行動 ---
-        if parsed['project']['next_actions']:
-            actions_report[project_name] = {
-                "date": date,
-                "actions": parsed['project']['next_actions']
-            }
-
-    # [NEW] 產出 Nudge 用的狀態檔
-    if actions_report:
-        with open(STATUS_FILE, 'w', encoding='utf-8') as f:
-            json.dump(actions_report, f, ensure_ascii=False, indent=2)
-        print(f"🚀 Generated Status File: {STATUS_FILE}")
+        # [NEW] 2. 萃取任務並發送
+        all_content = raw_text # 或只針對 Project 區塊
+        tasks = extract_tasks(all_content)
+        if tasks:
+            print(f"Found {len(tasks)} tasks. Syncing...")
+            send_to_zapier(tasks, date)
 
 if __name__ == "__main__":
     process_inbox_files()

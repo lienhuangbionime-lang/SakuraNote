@@ -4,6 +4,7 @@ import uuid
 import datetime
 import google.generativeai as genai
 import frontmatter
+import re
 
 # 1. 配置 Gemini
 API_KEY = os.getenv("GEMINI_API_KEY")
@@ -15,10 +16,10 @@ def analyze_dual_track_entry(raw_text):
     """
     專門解析 Dual-Track (Project/Life) 格式的日記
     """
-    model = genai.GenerativeModel('gemini-1.5-flash') # 使用 Flash 模型速度快且便宜
+    model = genai.GenerativeModel('gemini-1.5-flash') # Flash 模型速度快且便宜
 
     # 核心 Prompt：教導 AI 如何閱讀你的 Dual-Track 格式
-    prompt = f"""
+prompt = f"""
     You are the parser for LifeOS. Convert the raw "Dual-Track" journal into structured JSON.
     
     ### Input Text:
@@ -26,24 +27,31 @@ def analyze_dual_track_entry(raw_text):
     
     ### Extraction Logic:
     1. **Project Intelligence**:
-       - 'name_candidates': Extract potential project names from repeated nouns in Highlights/Behavior Path.
-       - 'signals': Content from 'Signals Detected'.
+       - 'name_candidates': Extract potential project names from repeated nouns.
+       - 'signals': Content from 'Signals Detected' (Observations).
        - 'blind_spots': Content from 'Blind Spot Question'.
-       - 'open_nodes': Content from 'Open Nodes'.
-       - 'confidence': Analyze 'Project Status Marker'. 
-          - structure_score: (Low/Med/High) based on defined modules.
-          - verification_score: (Low/Med/High) based on Verified/Unverified items.
+       - 'open_nodes': Content from 'Open Nodes' (Abstract ideas, questions, loose thoughts).
     
-    2. **Life Telemetry** (Critical):
+    2. **Action Extraction Protocol (CRITICAL)**:
+       - 'action_items': Extract specific, actionable tasks.
+         - RULE 1: Must extract items from "Tomorrow's MIT" section.
+         - RULE 2: Must extract lines starting with "- [ ]" or "TODO".
+         - RULE 3: Infer implicit high-priority tasks from the narrative (e.g., "I need to fix X tomorrow").
+         - Format: List of objects {{ "task": "...", "priority": "High/Med/Low", "context": "..." }}.
+    
+    3. **Life Telemetry**:
        - 'energy_stability': Extract from metrics or infer (High/Med/Low).
-       - 'relationship_presence': Boolean (True if meaningful interaction described).
-       - 'baseline_safety': (Stable/Warning/Intervene) based on health/sleep/crisis.
+       - 'relationship_presence': Boolean.
+       - 'baseline_safety': (Stable/Warning/Intervene).
     
     ### Output Format (Strict JSON):
     {{
       "mood": float,
       "focus": float,
       "tags": ["tag1"],
+      "action_items": [
+         {{ "task": "Fix the sync bug", "priority": "High", "context": "Project A" }}
+      ],
       "project_data": {{
           "candidates": ["name1"],
           "signals": "string",
@@ -62,6 +70,7 @@ def analyze_dual_track_entry(raw_text):
 
     try:
         response = model.generate_content(prompt)
+        # 清洗 Gemini 回傳的 Markdown 格式
         clean_text = response.text.replace('```json', '').replace('```', '').strip()
         analysis = json.loads(clean_text)
     except Exception as e:
@@ -74,13 +83,19 @@ def analyze_dual_track_entry(raw_text):
         }
 
     # 生成向量 (Embedding) 用於未來的 RAG 搜尋
-    embedding_result = genai.embed_content(
-        model="models/embedding-001",
-        content=raw_text,
-        task_type="RETRIEVAL_DOCUMENT"
-    )
+    # 如果 Embedding API 配額不足，這一步可以 try-except 包起來
+    try:
+        embedding_result = genai.embed_content(
+            model="models/embedding-001",
+            content=raw_text,
+            task_type="RETRIEVAL_DOCUMENT"
+        )
+        embedding = embedding_result['embedding']
+    except Exception as e:
+        print(f"Embedding Failed: {e}")
+        embedding = []
     
-    return analysis, embedding_result['embedding']
+    return analysis, embedding
 
 def save_to_inbox(raw_text, analysis, embedding):
     """
@@ -88,8 +103,6 @@ def save_to_inbox(raw_text, analysis, embedding):
     """
     # 嘗試從日記內容抓取日期，若無則用今天
     date_str = datetime.datetime.now().strftime("%Y-%m-%d")
-    # 簡單的正則抓取標題日期 (2026-01-20)
-    import re
     date_match = re.search(r'(\d{4}-\d{2}-\d{2})', raw_text)
     if date_match:
         date_str = date_match.group(1)
@@ -98,7 +111,6 @@ def save_to_inbox(raw_text, analysis, embedding):
     filename_base = f"data/inbox/{date_str}_{entry_id}"
     
     # 1. 建構前端 index.html 需要的完整資料結構
-    # 這裡將 AI 分析結果與原始文字結合，符合 index.html 的 sanitizeLogEntry 格式
     frontend_data = {
         "uuid": entry_id,
         "date": date_str,
@@ -112,16 +124,15 @@ def save_to_inbox(raw_text, analysis, embedding):
             "summary": analysis.get("summary", ""),
             "sections": analysis.get("sections", {})
         },
-        "embedding": embedding # 向量數據 (前端不會用到，但為了未來 RAG 存著)
+        "embedding": embedding # 向量數據
     }
 
-    # 2. 寫入 Sidecar JSON (這就是 GitHub Sync 會抓取的檔案)
+    # 2. 寫入 Sidecar JSON (GitHub Sync 會抓取這個檔案)
     os.makedirs("data/inbox", exist_ok=True)
     with open(f"{filename_base}.json", "w", encoding="utf-8") as f:
         json.dump(frontend_data, f, ensure_ascii=False, indent=2)
 
-    # 3. 寫入 Markdown (給人看的備份)
-    # Frontmatter 讓 GitHub 網頁版預覽時也很漂亮
+    # 3. 寫入 Markdown (作為人類可讀備份)
     post = frontmatter.Post(raw_text, **{
         "uuid": entry_id,
         "mood": analysis.get("mood"),
@@ -138,7 +149,7 @@ if __name__ == "__main__":
     
     if not journal_text:
         print("⚠️ No text provided via JOURNAL_TEXT env var.")
-        # 本地測試用 (可以把你的範例日記貼在這裡測試)
+        # 本地測試用，若直接執行此腳本可放假資料
         exit(1)
     
     analysis_data, vector_data = analyze_dual_track_entry(journal_text)

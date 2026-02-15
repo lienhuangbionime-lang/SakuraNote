@@ -1,0 +1,26 @@
+fastapi
+uvicorn
+google-genai
+google-generativeai
+supabase
+pydantic>=2.0.0
+pydantic-settings
+python-dotenv
+apscheduler
+requests
+langchain
+langchain-google-genai
+langchain-community
+langchain-text-splitters
+pypdf
+python-multipart
+tiktoken
+python-dateutil
+# Upgrade: Vision & Web
+pillow
+beautifulsoup4
+youtube-transcript-api
+lxml
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib

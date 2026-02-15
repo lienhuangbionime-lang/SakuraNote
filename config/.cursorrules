@@ -1,0 +1,55 @@
+# LifeOS v3.5 - Cursor AI Rules (Flat Layout)
+
+## 🎯 Primary Directive
+Read `docs/for-ai/SYSTEM_CONTEXT.md` FIRST before generating any code.
+**Verification Status**: ✅ [2026-02-14] 38-Defect Growth Cycle Complete. Schema aligned (UUID/Memories).
+**Layout**: Flat (Direct access to backend-cortex/ and frontend-body/).
+
+## 🚫 Absolute Prohibitions
+- NEVER use emojis in Python print() statements
+- NEVER use Tailwind CSS without explicit request
+- NEVER modify database schema without reading `backend-cortex/schemas/registry.json`
+- NEVER use deprecated google.generativeai (use google.genai)
+- NEVER hardcode credentials
+- NEVER modify `backend-cortex/prompts/system_daily.md` without verifying the latest version with the user.
+
+## ✅ Mandatory Practices
+- ALWAYS use [OK], [WARN], [ERROR] for logs
+- ALWAYS use Pydantic models for validation
+- ALWAYS include type hints
+- ALWAYS handle errors gracefully
+- ALWAYS update documentation in `docs/` when changing code
+
+## 📐 Tech Stack
+Backend: FastAPI + Supabase + Gemini 2.5 Flash
+Frontend: Next.js 14 + TypeScript + Vanilla CSS
+
+## 🗄️ Core Tables
+- memories (日記核心表)
+- projects (專案管理)
+- tasks (任務清單)
+
+## 🔑 Key Files to Check
+Before editing:
+- backend-cortex/schemas/registry.json (database schema)
+- backend-cortex/schemas/evolution_log.json (change history)
+- docs/for-ai/SYSTEM_CONTEXT.md (complete context)
+
+## 🎨 Code Style
+Python:
+- Use async/await for I/O
+- Pydantic v2 strict mode
+- Type hints required
+
+## 🔄 Schema Evolution Protocol
+1. Read backend-cortex/schemas/registry.json
+2. Use tools in backend-cortex/tools/
+3. Update evolution_log.json
+4. Get user approval
+
+## 🐛 Common Issues
+- 500 Error -> Check for emojis in Python logs
+- Empty memories -> Check table name "memories"
+
+---
+For complete context, see: docs/for-ai/SYSTEM_CONTEXT.md

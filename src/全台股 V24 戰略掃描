@@ -1,0 +1,239 @@
+import yfinance as yf
+import pandas as pd
+import numpy as np
+import requests
+from datetime import datetime
+import time
+import os
+from colorama import Fore, Style, init
+from tqdm import tqdm
+
+# 初始化
+init(autoreset=True)
+pd.set_option('display.max_columns', None)
+
+
+# ==========================================
+# 📐 SYSTEM CONSTITUTION (憲章參數)
+# ==========================================
+class Config:
+    # 核心參數
+    LOOKBACK_DAYS = 200  # 下載長度
+    MA_LONG = 90  # 趨勢線
+    MA_SHORT = 20  # 支撐線
+
+    # 閾值 (基於數據優化)
+    TH_TREND_GAP = 1.01  # F3: 均線開口必須 > 1% (確保多頭)
+    TH_KISS_DIST = 0.02  # F6: 股價距離 MA20 必須 < 2% (確保回調)
+    TH_VWAP_DEV_MAX = 0.15  # F10: 乖離季線成本不可超過 15% (防止追高)
+    TH_VOL_COMPRESS = 0.5  # F11: 波動壓縮係數 (相對低波動)
+
+    # 濾網
+    MIN_PRICE = 10  # 雞蛋水餃股過濾
+    MIN_VOL_AMT = 50000000  # 5000萬台幣日成交額 (防流動性枯竭)
+
+
+# ==========================================
+# 🛠️ ENGINE CORE (引擎核心)
+# ==========================================
+class TrendSniperEngine:
+    def __init__(self):
+        self.report = []  # 初始化報告列表
+
+    def get_all_tw_tickers(self):
+        """獲取台股清單 (上市+上櫃)"""
+        print(f"{Fore.YELLOW}📡 連線證交所抓取最新股票清單...{Style.RESET_ALL}")
+        headers = {'User-Agent': 'Mozilla/5.0'}
+
+        # Mode=2: 上市, Mode=4: 上櫃
+        market_types = [(2, '.TW', '上市'), (4, '.TWO', '上櫃')]
+        all_dfs = []
+
+        for mode, suffix, market_name in market_types:
+            url = f"https://isin.twse.com.tw/isin/C_public.jsp?strMode={mode}"
+            try:
+                r = requests.get(url, verify=False, headers=headers)
+                df = pd.read_html(r.text)[0]
+                df.columns = df.iloc[0]
+                df = df.iloc[2:]
+
+                # 過濾 4 位數代碼 (排除權證)
+                df['代號'] = df['有價證券代號及名稱'].apply(lambda x: x.split()[0])
+                df = df[df['代號'].apply(lambda x: len(x) == 4)]
+
+                df['名稱'] = df['有價證券代號及名稱'].apply(lambda x: x.split()[-1])
+                df['Type'] = suffix  # 保存後綴 (.TW 或 .TWO)
+
+                all_dfs.append(df[['代號', '名稱', 'Type', '產業別']].copy())
+                print(f"✅ {market_name}清單獲取成功")
+            except Exception as e:
+                print(f"❌ {market_name} 清單抓取失敗: {e}")
+
+        if all_dfs:
+            df_all = pd.concat(all_dfs, ignore_index=True)
+
+            # 過濾 ETF (產業別包含 ETF 或 ETN) - 這是選擇性的，根據你的需求保留或刪除
+            # df_all = df_all[~df_all['產業別'].str.contains('ETF|ETN', na=False)]
+
+            print(f"{Fore.GREEN}✅ 成功獲取 {len(df_all)} 檔股票代碼！{Style.RESET_ALL}")
+            return df_all
+        return pd.DataFrame()
+
+    def fetch_data(self, ticker_full):
+        """獲取 OHLCV + 基本面快照"""
+        try:
+            stock = yf.Ticker(ticker_full)
+            # period設長一點確保有足夠數據計算 MA90
+            df = stock.history(period="1y")
+            if df.empty: return None, None
+            return df, stock.info
+        except Exception:
+            return None, None
+
+    def analyze(self, ticker, name, suffix):
+        """核心分析邏輯 (4大倖存因子)"""
+        ticker_full = f"{ticker}{suffix}"
+        df, info = self.fetch_data(ticker_full)
+
+        if df is None or len(df) < 100: return None
+
+        # 1. 基礎清洗
+        close = df['Close']
+        vol = df['Volume']
+
+        # 檢查是否有今日數據，若無則取最後一筆
+        if close.empty or vol.empty: return None
+
+        last_close = close.iloc[-1]
+        last_vol = vol.iloc[-1]
+
+        # 流動性與價格濾網
+        if (last_close < Config.MIN_PRICE) or (last_close * last_vol < Config.MIN_VOL_AMT):
+            return None
+
+            # 2. 因子計算 (Feature Engineering)
+        ma20 = close.ewm(span=Config.MA_SHORT, adjust=False).mean()
+        ma90 = close.ewm(span=Config.MA_LONG, adjust=False).mean()
+
+        # [F3] 趨勢核：均線開口
+        if ma90.iloc[-1] == 0: return None  # 防除零
+        f3_gap = ma20.iloc[-1] / ma90.iloc[-1]
+
+        # [F6] 回調核：唇吻距離 (股價相對於 MA20 的位置)
+        if ma20.iloc[-1] == 0: return None
+        dist_ma20 = (last_close - ma20.iloc[-1]) / ma20.iloc[-1]
+        f6_kiss = abs(dist_ma20)
+
+        # [F10] 位階核：Q-VWAP 乖離 (簡化為 60日均價乖離)
+        # 注意：Volume 為 0 會導致除零，需處理
+        vol_ma = df['Volume'].rolling(60).sum()
+        vol_ma = vol_ma.replace(0, 1)  # 避免除以0
+
+        vwap_est = (df['Volume'] * df['Close']).rolling(60).sum() / vol_ma
+
+        if pd.isna(vwap_est.iloc[-1]) or vwap_est.iloc[-1] == 0: return None
+        f10_dev = (last_close - vwap_est.iloc[-1]) / vwap_est.iloc[-1]
+
+        # [F11] 動能核：波動壓縮 (Week Volatility)
+        high_5 = df['High'].rolling(5).max()
+        low_5 = df['Low'].rolling(5).min()
+
+        if low_5.iloc[-1] == 0: return None
+        f11_vol = (high_5.iloc[-1] - low_5.iloc[-1]) / low_5.iloc[-1]
+
+        # 3. 憲章審查 (Constitution Check)
+        # A. 營收成長濾網 (取代 EPS)
+        # 注意：info 獲取可能會變慢或失敗，需容錯
+        rev_growth = -1
+        if info:
+            rev_growth = info.get('revenueGrowth', -1)
+            # 有些公司可能暫無資料，視策略決定是否嚴格過濾
+            # 這裡設為: 若有資料且為負則踢除，無資料則暫時放行或也踢除
+            if rev_growth is not None and rev_growth <= 0:
+                return None
+            if rev_growth is None: rev_growth = 0  # 無資料視為0
+
+        # B. 趨勢慣性濾網 (Trend Inertia)
+        if f3_gap < Config.TH_TREND_GAP:
+            return None
+
+            # C. 買點濾網 (Entry Trigger)
+        # 邏輯：多頭排列 + 剛好回測到 MA20 附近 + 沒有過熱
+        # 確保 MA90 趨勢向上
+        is_trend_up = (ma20.iloc[-1] > ma90.iloc[-1]) and (ma90.iloc[-1] > ma90.iloc[-5])
+        is_pullback = f6_kiss < Config.TH_KISS_DIST  # 距離 MA20 很近
+        is_not_hot = f10_dev < Config.TH_VWAP_DEV_MAX  # 乖離不大
+
+        # 4. 訊號輸出
+        if is_trend_up and is_pullback and is_not_hot:
+            risk_price = ma90.iloc[-1]  # 風控守長線
+            return {
+                "代號": ticker,
+                "名稱": name,
+                "訊號": "💋 回調鎖定",
+                "現價": round(last_close, 2),
+                "MA20距離%": round(dist_ma20 * 100, 2),
+                "F3強度": round(f3_gap, 2),
+                "F11壓縮度": round(f11_vol * 100, 2),
+                "營收成長": f"{rev_growth:.1%}" if rev_growth else "N/A",
+                "建議停損": round(risk_price, 2)
+            }
+        return None
+
+    def run(self):
+        print(f"{Fore.YELLOW}🚀 TrendSniper V1.0 啟動...{Style.RESET_ALL}")
+
+        # 1. 獲取清單
+        df_list = self.get_all_tw_tickers()
+
+        if df_list.empty:
+            print("❌ 無法獲取股票清單，程式結束。")
+            return
+
+        # 測試模式：只跑前 50 檔 (正式跑請註解這行)
+        # df_list = df_list.head(50)
+
+        target_list = df_list.values.tolist()  # 轉為 list [代號, 名稱, Type, 產業別]
+        print(f"目標清單: {len(target_list)} 檔")
+
+        # 2. 開始掃描
+        for row in tqdm(target_list):
+            ticker = row[0]
+            name = row[1]
+            suffix = row[2]  # .TW 或 .TWO
+
+            try:
+                res = self.analyze(ticker, name, suffix)
+                if res:
+                    self.report.append(res)
+                    # 即時顯示抓到的標的
+                    print(f"🎯 Found: {ticker} {name} {res['訊號']} (現價: {res['現價']})")
+
+                # 稍微延遲避免被鎖 IP
+                time.sleep(0.1)
+            except KeyboardInterrupt:
+                print("\n🛑 使用者中斷掃描")
+                break
+            except Exception as e:
+                # print(f"Error analyzing {ticker}: {e}")
+                continue
+
+        # 3. 輸出報告
+        if self.report:
+            df_rep = pd.DataFrame(self.report)
+            filename = f"TrendSniper_Report_{datetime.now().strftime('%Y%m%d')}.csv"
+            df_rep.to_csv(filename, index=False, encoding='utf-8-sig')
+            print(f"\n✅ 掃描完成，共發現 {len(df_rep)} 檔標的")
+            print(f"📁 報告已產出: {filename}")
+            print("-" * 50)
+            print(df_rep[['代號', '名稱', '現價', '營收成長', 'MA20距離%']])
+        else:
+            print("\n❄️ 今日無符合憲章之標的 (空手也是一種策略)")
+
+
+# ==========================================
+# 🚀 MAIN
+# ==========================================
+if __name__ == "__main__":
+    engine = TrendSniperEngine()
+    engine.run()

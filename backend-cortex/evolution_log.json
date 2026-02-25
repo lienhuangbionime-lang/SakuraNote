@@ -1,0 +1,116 @@
+[
+  {
+    "timestamp": "2026-02-14T01:55:00Z",
+    "event": "Protocol Alignment",
+    "type": "ARCH",
+    "description": "Aligned frontend CaptureView with backend ingest.py schema. Fixed content/text mismatch.",
+    "impact": "High - Restored Capture flow functionality."
+  },
+  {
+    "timestamp": "2026-02-14T02:05:00Z",
+    "event": "Schema Consolidation",
+    "type": "DB",
+    "description": "Unified all database schemas into lifeos_v3.5_full_schema.sql. Established single source of truth.",
+    "impact": "Critical - Established structural stability."
+  },
+  {
+    "timestamp": "2026-02-14T11:40:00Z",
+    "event": "Evolution Log Implementation",
+    "type": "PROTOCOL",
+    "description": "Implemented migrations/005_cortex_growth_logs.sql for Glass Box protocol transparency.",
+    "impact": "High - Auditable AI decision making."
+  },
+  {
+    "timestamp": "2026-02-14T13:50:00Z",
+    "event": "Growth Verification",
+    "type": "VERIFICATION",
+    "description": "Identified and resolved 38 critical defects across frontend client and backend API. Successfully verified build.",
+    "impact": "Critical - Proved system growth and resilience."
+  },
+  {
+    "timestamp": "2026-02-14T14:10:00Z",
+    "event": "Memory Unification",
+    "type": "API",
+    "description": "Synchronized memories.py and ingest.py to use 'memories' table. Updated Pydantic schemas for UUID and metrics.",
+    "impact": "High - Fixed data visibility across system."
+  },
+  {
+    "timestamp": "2026-02-14T14:20:00Z",
+    "event": "Codebase Purification",
+    "type": "CLEANUP",
+    "description": "Removed legacy kernel source, redundant routers, and transient test scripts. Achieved minimal production state.",
+    "impact": "Medium - Improved maintenance and handover efficiency."
+  }
+  {
+    "timestamp": "2026-02-14T15:45:00Z",
+    "event": "Intelligence Layer Activation",
+    "type": "EVOLUTION",
+    "description": "Implemented 'Glass Box' Decision Matrix (system_cortex.md) and enabled 3072-dim Semantic Search (VectorEngine + RPC).",
+    "impact": "High - Enabled advanced AI capabilities."
+  },
+  {
+    "timestamp": "2026-02-15T09:45:00Z",
+    "event": "Rate Limit Incident",
+    "type": "FIX",
+    "description": "System hit 429 errors on gemini-2.0-flash due to forced hotfix. Switched to gemini-1.5-flash (stable) and removed backend override.",
+    "impact": "High - Restored system availability."
+  },
+  {
+    "timestamp": "2026-02-17T05:18:00Z",
+    "event": "v3.5 Upgrade Planning",
+    "type": "EVOLUTION",
+    "description": "Initiated v3.5 upgrade with three pillars: (1) Cognitive Awakening (chat memory + SSE), (2) Subconscious Retrieval (RAG + hybrid search with 3072-dim embeddings), (3) Agentic Automation (APScheduler + TWSE scanner). Verified vector dimensions (3072=3072), confirmed multimodal capabilities, integrated TrendSniper V24 stock scanner.",
+    "impact": "Critical - Foundation for autonomous intelligence layer.",
+    "files_created": [
+      "app/workers/twse_scanner.py"
+    ],
+    "files_pending": [
+      "app/services/embedder.py",
+      "app/services/rag.py",
+      "prompts/system_cortex.md",
+      "app/subconscious/daily_reflection.py"
+    ],
+    "next_phase": "Phase 1: RAG Infrastructure (embedder + hybrid search)"
+  },
+  {
+    "timestamp": "2026-02-17T08:48:00Z",
+    "event": "Automated Sync Tool Implementation",
+    "type": "PROTOCOL",
+    "description": "Implemented tools/cortex_sync.py to automatically sync critical files to G:\\我的雲端硬碟\\Cortex (Google Drive). Added mandatory sync protocol to SYSTEM_CONTEXT.md. All AI developers must run sync tool after modifying SYSTEM_CONTEXT, evolution_log, prompts, schemas, migrations, or core backend files.",
+    "impact": "Critical - Ensures persistent backup and single source of truth.",
+    "files_created": [
+      "tools/cortex_sync.py"
+    ],
+    "sync_rules": {
+      "trigger_files": [
+        "SYSTEM_CONTEXT.md",
+        "evolution_log.json",
+        ".cursorrules",
+        "prompts/*",
+        "schemas/*",
+        "migrations/*",
+        "tools/*",
+        "main.py",
+        "app/core/*",
+        "app/api/v1/*",
+        "app/workers/*"
+      ],
+      "destination": "G:\\我的雲端硬碟\\Cortex",
+      "command": "python tools/cortex_sync.py"
+    }
+  },
+  {
+    "timestamp": "2026-02-17T14:00:00Z",
+    "event": "Local-First Storage & Developer Handover",
+    "type": "ARCHITECTURE",
+    "description": "Implemented local-first architecture (data/memories/). Implemented Append Mode (one file per day, cumulative). Created AI memory reading tool (tools/ai_memory_reader.py). Organized development documentation into tools/ directory. Created developer handover document (tools/START_HERE.md). Created database schema document (tools/DATABASE_SCHEMA.md). Created old diary migration tool (tools/migrate_backup_file.py). Cleaned up duplicate tables (LogEntry, Task).",
+    "impact": "High - Completed Phase 1 & 2, established complete developer handover mechanism.",
+    "files_created": [
+      "data/memories/",
+      "tools/ai_memory_reader.py",
+      "tools/START_HERE.md",
+      "tools/DATABASE_SCHEMA.md",
+      "tools/migrate_backup_file.py"
+    ]
+  }
+]

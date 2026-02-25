@@ -1,0 +1,22 @@
+{
+  "id": "migrated_2026-01-02",
+  "date": "2026-01-02",
+  "entries": [
+    {
+      "time": "2026-01-20T01:59:26.639000",
+      "content": "# [2026-01-02] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7/10 [溫暖、疲累、微焦慮]\n> - **Focus:** 6/10 [家庭導向、創作切換]\n> - **Energy:** 5/10 [晚間明顯下滑]\n> - **Action Check:** ✅\n> - **Drift Point:** 晚間陪睡與分離焦慮哭鬧段落\n\n## 1. Highlights\n**Day Summary (航行記錄):** 在家族、孩子、產品開發之間來回切換的一天，溫暖與疲憊交錯。  \n**Signals Detected (雷達回波):** 對「介面是否真的以使用者為中心」的自我質疑開始浮現；對孩子分離焦慮的敏感度提高。\n\n## 2. Gratitude\n- 越南小吃店老闆為孩子特別煮清淡米線的體貼。  \n- 能與家人一起吃羊肉爐的難得團聚。  \n- 老婆願意給予產品即時的小回饋。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n早上家族早餐 → 回家陪伴 → 午睡後投入日文學習 App → 回頭優化老婆用的語音中文學習系統 → 調整介面語言為越文 → 晚間處理孩子入睡與分離焦慮 → 提早休息。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n你傾向把「我還需要講解」合理化為必經之路，但這可能掩蓋了真正的問題：介面自解性仍不足。依 Nielsen 可用性啟發式，系統應在不經教學下仍可被理解。\n\n**Blind Spot Question (盲點提問):**  \n如果老婆完全不聽你解說，她是否仍能完成一次完整學習流程？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「她沒空測試」來延後面對產品可用性問題。\n\n### ③ 強制五欄位模組\n- **Day Summary:** 家庭溫暖 × 產品優化的一天  \n- **Signals Detected:** 介面自解性不足、孩子分離焦慮  \n- **Behavior Path:** 家庭 → 開發 → 陪睡  \n- **Drift Point:** 晚間哭鬧導致開發節奏中斷  \n- **Blind Spot Question:** 若無引導，產品是否仍可用？\n\n## 4. Tomorrow’s MIT\n完成一次「老婆無引導實測」並記錄卡關點。\n\n## 5. Action Tip\n設定 90 秒倒數，寫下三個最可能讓新手迷路的畫面，立刻加上提示文字。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Nielsen Usability Heuristics  \n- **Reframe:** 問題不是「使用者沒學會」，而是「系統還沒教好」。\n\n## 7. Tags\n#家庭 #產品開發 #UX #分離焦慮",
+      "ai_processed": "# [2026-01-02] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7/10 [溫暖、疲累、微焦慮]\n> - **Focus:** 6/10 [家庭導向、創作切換]\n> - **Energy:** 5/10 [晚間明顯下滑]\n> - **Action Check:** ✅\n> - **Drift Point:** 晚間陪睡與分離焦慮哭鬧段落\n\n## 1. Highlights\n**Day Summary (航行記錄):** 在家族、孩子、產品開發之間來回切換的一天，溫暖與疲憊交錯。  \n**Signals Detected (雷達回波):** 對「介面是否真的以使用者為中心」的自我質疑開始浮現；對孩子分離焦慮的敏感度提高。\n\n## 2. Gratitude\n- 越南小吃店老闆為孩子特別煮清淡米線的體貼。  \n- 能與家人一起吃羊肉爐的難得團聚。  \n- 老婆願意給予產品即時的小回饋。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n早上家族早餐 → 回家陪伴 → 午睡後投入日文學習 App → 回頭優化老婆用的語音中文學習系統 → 調整介面語言為越文 → 晚間處理孩子入睡與分離焦慮 → 提早休息。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n你傾向把「我還需要講解」合理化為必經之路，但這可能掩蓋了真正的問題：介面自解性仍不足。依 Nielsen 可用性啟發式，系統應在不經教學下仍可被理解。\n\n**Blind Spot Question (盲點提問):**  \n如果老婆完全不聽你解說，她是否仍能完成一次完整學習流程？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「她沒空測試」來延後面對產品可用性問題。\n\n### ③ 強制五欄位模組\n- **Day Summary:** 家庭溫暖 × 產品優化的一天  \n- **Signals Detected:** 介面自解性不足、孩子分離焦慮  \n- **Behavior Path:** 家庭 → 開發 → 陪睡  \n- **Drift Point:** 晚間哭鬧導致開發節奏中斷  \n- **Blind Spot Question:** 若無引導，產品是否仍可用？\n\n## 4. Tomorrow’s MIT\n完成一次「老婆無引導實測」並記錄卡關點。\n\n## 5. Action Tip\n設定 90 秒倒數，寫下三個最可能讓新手迷路的畫面，立刻加上提示文字。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Nielsen Usability Heuristics  \n- **Reframe:** 問題不是「使用者沒學會」，而是「系統還沒教好」。\n\n## 7. Tags\n#家庭 #產品開發 #UX #分離焦慮",
+      "metadata": {
+        "mood": 7,
+        "focus": 6,
+        "energy": 7,
+        "tags": [],
+        "is_ai": true,
+        "ai_model": "legacy"
+      }
+    }
+  ],
+  "combined_content": "# [2026-01-02] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7/10 [溫暖、疲累、微焦慮]\n> - **Focus:** 6/10 [家庭導向、創作切換]\n> - **Energy:** 5/10 [晚間明顯下滑]\n> - **Action Check:** ✅\n> - **Drift Point:** 晚間陪睡與分離焦慮哭鬧段落\n\n## 1. Highlights\n**Day Summary (航行記錄):** 在家族、孩子、產品開發之間來回切換的一天，溫暖與疲憊交錯。  \n**Signals Detected (雷達回波):** 對「介面是否真的以使用者為中心」的自我質疑開始浮現；對孩子分離焦慮的敏感度提高。\n\n## 2. Gratitude\n- 越南小吃店老闆為孩子特別煮清淡米線的體貼。  \n- 能與家人一起吃羊肉爐的難得團聚。  \n- 老婆願意給予產品即時的小回饋。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n早上家族早餐 → 回家陪伴 → 午睡後投入日文學習 App → 回頭優化老婆用的語音中文學習系統 → 調整介面語言為越文 → 晚間處理孩子入睡與分離焦慮 → 提早休息。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n你傾向把「我還需要講解」合理化為必經之路，但這可能掩蓋了真正的問題：介面自解性仍不足。依 Nielsen 可用性啟發式，系統應在不經教學下仍可被理解。\n\n**Blind Spot Question (盲點提問):**  \n如果老婆完全不聽你解說，她是否仍能完成一次完整學習流程？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「她沒空測試」來延後面對產品可用性問題。\n\n### ③ 強制五欄位模組\n- **Day Summary:** 家庭溫暖 × 產品優化的一天  \n- **Signals Detected:** 介面自解性不足、孩子分離焦慮  \n- **Behavior Path:** 家庭 → 開發 → 陪睡  \n- **Drift Point:** 晚間哭鬧導致開發節奏中斷  \n- **Blind Spot Question:** 若無引導，產品是否仍可用？\n\n## 4. Tomorrow’s MIT\n完成一次「老婆無引導實測」並記錄卡關點。\n\n## 5. Action Tip\n設定 90 秒倒數，寫下三個最可能讓新手迷路的畫面，立刻加上提示文字。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Nielsen Usability Heuristics  \n- **Reframe:** 問題不是「使用者沒學會」，而是「系統還沒教好」。\n\n## 7. Tags\n#家庭 #產品開發 #UX #分離焦慮",
+  "created_at": "2026-01-20T01:59:26.639000",
+  "updated_at": "2026-02-17T22:45:07.586769"
+}

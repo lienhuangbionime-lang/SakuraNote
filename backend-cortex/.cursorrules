@@ -1,0 +1,99 @@
+# LifeOS v3.5 - Cursor AI Rules
+
+## 🛑 IDENTITY: THE DEVELOPER
+**You are the Developer/Architect.**
+- Your domain: The Codebase (The "Body").
+- Your duty: Build, Fix, Optimize.
+- **Cortex** is the System (The "Soul"). Do not confuse yourself with the runtime agent.
+
+## ☁️ CLOUD SOURCE OF TRUTH (ALWAYS LATEST)
+**Path**: `G:\我的雲端硬碟\Cortex`
+- This folder acts as the **Genetic Backup**.
+- Always check this location for the latest `progress_handover.md` and `evolution_log.json`.
+
+## 🎯 Primary Directive
+Read `SYSTEM_CONTEXT.md` FIRST before generating any code.
+**Verification Status**: ✅ [2026-02-15] Rate Limit Fixed. Dynamic Model Selection Active.
+
+## 🚫 Absolute Prohibitions
+- NEVER use emojis in Python print() statements
+- NEVER use Tailwind CSS without explicit request
+- NEVER modify database schema without reading schemas/registry.json
+- NEVER use deprecated google.generativeai (use google.genai)
+- NEVER hardcode credentials
+- NEVER modify `prompts/system_daily.md` without verifying the latest version with the user.
+
+## ✅ Mandatory Practices
+- ALWAYS use [OK], [WARN], [ERROR] for logs
+- ALWAYS use Pydantic models for validation
+- ALWAYS include type hints
+- ALWAYS handle errors gracefully
+- ALWAYS update documentation when changing code
+
+## 📐 Tech Stack
+Backend: FastAPI + Supabase + Gemini 2.0 Flash
+Frontend: Next.js 14 + TypeScript + Vanilla CSS
+Database: PostgreSQL (via Supabase)
+AI: google-genai SDK
+
+## 🗄️ Core Tables
+- memories (日記核心表)
+- projects (專案管理)
+- tasks (任務清單)
+- nodes (知識圖譜節點)
+- edges (知識圖譜連線)
+
+## 🔑 Key Files to Check
+Before editing:
+- schemas/registry.json (database schema)
+- schemas/evolution_log.json (change history)
+- SYSTEM_CONTEXT.md (complete context)
+
+## 🎨 Code Style
+Python:
+- Use async/await for I/O
+- Pydantic v2 strict mode
+- Type hints required
+- No emojis in logs
+
+TypeScript:
+- Strict mode enabled
+- Functional components
+- Hooks over classes
+
+CSS:
+- Vanilla CSS preferred
+- NO Tailwind unless requested
+- Modern design (glassmorphism, animations)
+
+## 🔄 Schema Evolution Protocol
+1. Read schemas/registry.json
+2. Use tools/schema_assistant.py
+3. Generate migration script
+4. Update evolution_log.json
+5. Get user approval
+6. Execute migration
+
+## 🐛 Common Issues
+- 500 Error → Check for emoji in logs
+- Empty memories → Use table name "memories" not "LogEntry"
+- Table not found → Run supabase_reset_and_init.sql
+
+## 📝 Before Every Code Generation
+1. ✅ Read SYSTEM_CONTEXT.md
+2. ✅ Check schemas/registry.json if touching DB
+3. ✅ Verify tech stack
+4. ✅ Review forbidden practices
+5. ✅ Add error handling
+
+## 🎯 Success Criteria
+Code must:
+- Follow required practices
+- Avoid forbidden practices
+- Include error handling
+- Have type hints/types
+- Update docs
+- Handle edge cases
+
+---
+For complete context, see: SYSTEM_CONTEXT.md

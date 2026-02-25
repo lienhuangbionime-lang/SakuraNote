@@ -1,0 +1,22 @@
+{
+  "id": "migrated_2026-01-21",
+  "date": "2026-01-21",
+  "entries": [
+    {
+      "time": "2026-01-31T22:37:04.168000",
+      "content": "# 2026-01-21 日記\n\n> Daily Metrics\n> - Mood: Auto (8｜來源：Behavior-Based)\n> - Focus: Auto (7｜來源：Behavior-Based)\n> - Energy: Auto (7｜來源：Behavior-Based)\n> - Time Ratio: 🔧 / 🌊\n> - Action Check: ✅\n> - Drift Point: 系統界面優化構想尚未具體行動\n\n## 1. Highlights\n- Day Summary: 今日花時間將 Live OS 的代辦事項透過自建網頁，讓 Plus 自動傳送到 Google Tasks，建立初步雲端系統框架，形成資訊循環。\n- Signals Detected: 對專案進度可視化、專案分類與資料庫擴充的需求顯現。\n\n## 2. Gratitude\n\n## 3. Reflection\n- Behavior Path:\n  - 將 Live OS 代辦事項透過網頁自動傳送至 Google Tasks [T: 不確定區間] (S/A)\n  - 與 Gemini 系統反覆溝通以建立雲端系統 [T: 不確定區間] (S/A)\n  - 規劃專案進度及下一步行動的可視化需求 [T: 不確定區間] (⚠️)\n  - 構思優化介面與資料庫擴充 [T: 不確定區間] (⚠️)\n- Anti-Cognitive Closure: 無\n- Blind Spot Question: 系統自動化與介面優化的構想，是否存在設計上的瓶頸或重複性工作？\n- Self-Deception Trigger: 無\n\n### 強制五欄位模組\n[Day Summary] 已於 Highlights 中記錄 / [Signals Detected] 已於 Highlights 中記錄 / [Behavior Path] 已於 Reflection 中記錄 / [Drift Point] 系統界面優化構想尚未具體行動 / [Blind Spot Question] 已於 Reflection 中記錄\n\n## 4. Tomorrow’s MIT\n- 檢查 Plus → Google Tasks 自動傳送是否運行正常\n- 設計專案進度視覺化初稿\n- 制定資料庫擴充規劃方案\n\n## 5. Action Tip\n- 將抽象構想拆解為可操作任務，先完成最小可用功能 (MVP)，再逐步擴展\n\n## 6. Cognitive Lens Reframing\n- Model/Concept: 系統循環、自動化\n- Reframe: 將日常代辦自動化，讓注意力專注於專案狀態推進，而非手動紀錄\n\n## 7. Tags\n#LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦\n\n## Graph Seeds\n[[2026-01-21]] #LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦",
+      "ai_processed": "# 2026-01-21 日記\n\n> Daily Metrics\n> - Mood: Auto (8｜來源：Behavior-Based)\n> - Focus: Auto (7｜來源：Behavior-Based)\n> - Energy: Auto (7｜來源：Behavior-Based)\n> - Time Ratio: 🔧 / 🌊\n> - Action Check: ✅\n> - Drift Point: 系統界面優化構想尚未具體行動\n\n## 1. Highlights\n- Day Summary: 今日花時間將 Live OS 的代辦事項透過自建網頁，讓 Plus 自動傳送到 Google Tasks，建立初步雲端系統框架，形成資訊循環。\n- Signals Detected: 對專案進度可視化、專案分類與資料庫擴充的需求顯現。\n\n## 2. Gratitude\n\n## 3. Reflection\n- Behavior Path:\n  - 將 Live OS 代辦事項透過網頁自動傳送至 Google Tasks [T: 不確定區間] (S/A)\n  - 與 Gemini 系統反覆溝通以建立雲端系統 [T: 不確定區間] (S/A)\n  - 規劃專案進度及下一步行動的可視化需求 [T: 不確定區間] (⚠️)\n  - 構思優化介面與資料庫擴充 [T: 不確定區間] (⚠️)\n- Anti-Cognitive Closure: 無\n- Blind Spot Question: 系統自動化與介面優化的構想，是否存在設計上的瓶頸或重複性工作？\n- Self-Deception Trigger: 無\n\n### 強制五欄位模組\n[Day Summary] 已於 Highlights 中記錄 / [Signals Detected] 已於 Highlights 中記錄 / [Behavior Path] 已於 Reflection 中記錄 / [Drift Point] 系統界面優化構想尚未具體行動 / [Blind Spot Question] 已於 Reflection 中記錄\n\n## 4. Tomorrow’s MIT\n- 檢查 Plus → Google Tasks 自動傳送是否運行正常\n- 設計專案進度視覺化初稿\n- 制定資料庫擴充規劃方案\n\n## 5. Action Tip\n- 將抽象構想拆解為可操作任務，先完成最小可用功能 (MVP)，再逐步擴展\n\n## 6. Cognitive Lens Reframing\n- Model/Concept: 系統循環、自動化\n- Reframe: 將日常代辦自動化，讓注意力專注於專案狀態推進，而非手動紀錄\n\n## 7. Tags\n#LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦\n\n## Graph Seeds\n[[2026-01-21]] #LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦",
+      "metadata": {
+        "mood": 8,
+        "focus": 7,
+        "energy": 7,
+        "tags": [],
+        "is_ai": true,
+        "ai_model": "legacy"
+      }
+    }
+  ],
+  "combined_content": "# 2026-01-21 日記\n\n> Daily Metrics\n> - Mood: Auto (8｜來源：Behavior-Based)\n> - Focus: Auto (7｜來源：Behavior-Based)\n> - Energy: Auto (7｜來源：Behavior-Based)\n> - Time Ratio: 🔧 / 🌊\n> - Action Check: ✅\n> - Drift Point: 系統界面優化構想尚未具體行動\n\n## 1. Highlights\n- Day Summary: 今日花時間將 Live OS 的代辦事項透過自建網頁，讓 Plus 自動傳送到 Google Tasks，建立初步雲端系統框架，形成資訊循環。\n- Signals Detected: 對專案進度可視化、專案分類與資料庫擴充的需求顯現。\n\n## 2. Gratitude\n\n## 3. Reflection\n- Behavior Path:\n  - 將 Live OS 代辦事項透過網頁自動傳送至 Google Tasks [T: 不確定區間] (S/A)\n  - 與 Gemini 系統反覆溝通以建立雲端系統 [T: 不確定區間] (S/A)\n  - 規劃專案進度及下一步行動的可視化需求 [T: 不確定區間] (⚠️)\n  - 構思優化介面與資料庫擴充 [T: 不確定區間] (⚠️)\n- Anti-Cognitive Closure: 無\n- Blind Spot Question: 系統自動化與介面優化的構想，是否存在設計上的瓶頸或重複性工作？\n- Self-Deception Trigger: 無\n\n### 強制五欄位模組\n[Day Summary] 已於 Highlights 中記錄 / [Signals Detected] 已於 Highlights 中記錄 / [Behavior Path] 已於 Reflection 中記錄 / [Drift Point] 系統界面優化構想尚未具體行動 / [Blind Spot Question] 已於 Reflection 中記錄\n\n## 4. Tomorrow’s MIT\n- 檢查 Plus → Google Tasks 自動傳送是否運行正常\n- 設計專案進度視覺化初稿\n- 制定資料庫擴充規劃方案\n\n## 5. Action Tip\n- 將抽象構想拆解為可操作任務，先完成最小可用功能 (MVP)，再逐步擴展\n\n## 6. Cognitive Lens Reframing\n- Model/Concept: 系統循環、自動化\n- Reframe: 將日常代辦自動化，讓注意力專注於專案狀態推進，而非手動紀錄\n\n## 7. Tags\n#LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦\n\n## Graph Seeds\n[[2026-01-21]] #LiveOS #GoogleTasks #雲端系統 #專案進度 #自動化 #介面優化 #第二大腦",
+  "created_at": "2026-01-31T22:37:04.168000",
+  "updated_at": "2026-02-17T22:45:09.754642"
+}

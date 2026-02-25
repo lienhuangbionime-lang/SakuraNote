@@ -1,0 +1,50 @@
+# LifeOS Implementation Tasks
+
+- [x] Update `README.md` with system architecture <!-- id: 12 -->
+- [x] Create directory structure (`kernel/`, `data/`) <!-- id: 0 -->
+- [x] Implement C Kernel <!-- id: 1 -->
+    - [x] `kernel/diary_kernel.h` <!-- id: 2 -->
+    - [x] `kernel/diary_kernel.c` <!-- id: 3 -->
+- [x] Implement Compilation Script <!-- id: 4 -->
+    - [x] `kernel/compile.py` <!-- id: 5 -->
+- [x] Implement Python Driver <!-- id: 6 -->
+    - [x] `driver.py` <!-- id: 7 -->
+- [x] Implement Main Interface <!-- id: 8 -->
+    - [x] `main.py` <!-- id: 9 -->
+- [ ] Verify System <!-- id: 10 -->
+    - [ ] Install Node.js & npm (Blocking Frontend) <!-- id: 23 -->
+    - [x] Install Python & pip (Ver: 3.12.10) <!-- id: 24 -->
+    - [ ] Run `main.py` and check output <!-- id: 11 -->
+- [x] Restore UI Design <!-- id: 13 -->
+    - [x] Restore `frontend-body/app/page.tsx` <!-- id: 14 -->
+    - [x] Update `package.json` with dependencies <!-- id: 15 -->
+- [x] Implement Backend Cortex (Window 2 & 3) <!-- id: 16 -->
+    - [x] Create directory structure `backend-cortex/` <!-- id: 17 -->
+    - [x] Setup `requirements.txt` & `.env` <!-- id: 18 -->
+    - [x] Implement `app/core/config.py` <!-- id: 19 -->
+    - [x] Implement `app/core/gemini.py` (Client encapsulation) <!-- id: 20 -->
+    - [x] Implement `app/api/v1/ingest.py` (CaptureView endpoint) <!-- id: 21 -->
+    - [x] Implement `main.py` entry point <!-- id: 22 -->
+- [x] Upgrade to v3.5 (Three Pillars) <!-- id: 25 -->
+    - [x] Pillar 1: Cognitive Awakening <!-- id: 26 -->
+        - [x] Create `prompts/system_cortex.md` (Using SYSTEM_PROMPT) <!-- id: 27 -->
+        - [x] Modify `chat.py` to inject RAG context <!-- id: 28 -->
+    - [x] Pillar 2: Subconscious Retrieval (RAG) <!-- id: 29 -->
+        - [x] Implement `services/embedder.py` (3072-dim) <!-- id: 30 -->
+        - [x] Modify `ingest.py` for embedding pipeline <!-- id: 31 -->
+        - [x] Implement `services/rag.py` (hybrid search) <!-- id: 32 -->
+    - [x] Pillar 3: Agentic Automation <!-- id: 33 -->
+        - [x] Implement `subconscious/daily_reflection.py` <!-- id: 34 -->
+        - [x] Add APScheduler to `main.py` <!-- id: 35 -->
+        - [x] (Optional) Implement `workers/twse_scanner.py` <!-- id: 36 -->
+    - [x] Data Migration & Sync <!-- id: 37 -->
+        - [x] Migrate 66 legacy memories to new format <!-- id: 38 -->
+        - [x] Sync all memories to Supabase <!-- id: 39 -->
+    - [x] URL Context & Discussion <!-- id: 40 -->
+        - [x] Implement `url_fetch.py` (YouTube/Web) <!-- id: 41 -->
+        - [x] Update `chat.py` with `URL_DISCUSSION_PROMPT` <!-- id: 42 -->
+        - [x] Add Frontend URL detection & preview <!-- id: 43 -->
+    - [x] Monthly Review Agent <!-- id: 44 -->
+        - [x] Implement `generate_monthly_review.py` <!-- id: 45 -->
+        - [x] Add API endpoints (`GET /review`, `POST /generate`) <!-- id: 46 -->
+        - [x] Create `ReviewCard.tsx` and integrate into Dashboard <!-- id: 47 -->

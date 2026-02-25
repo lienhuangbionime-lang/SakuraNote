@@ -1,0 +1,22 @@
+{
+  "id": "migrated_2026-01-07",
+  "date": "2026-01-07",
+  "entries": [
+    {
+      "time": "2026-01-20T01:59:26.639000",
+      "content": "# [2026-01-07] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7（興奮中帶著一點不安）\n> - **Focus:** 8（長時間集中在單一主題）\n> - **Energy:** 7（穩定輸出型）\n> - **Action Check:** ✅\n> - **Drift Point:** 看到「小朋友用 AI 賺日薪」的新聞瞬間產生橫向分心\n\n## 1. Highlights\n**Day Summary (航行記錄):**  \n我把注意力幾乎全部投入在股票搜尋系統的建構與測試，同時開始浮現「這也許可以變成商品」的念頭。\n\n**Signals Detected (雷達回波):**  \n- 長週期選股、簡化進出場規則，讓我感到「輕鬆但有效」。  \n- 外界新聞刺激了我對副收入的想像與焦慮。\n\n## 2. Gratitude\n- 感謝自己已經實際做出樣本，而不是只停留在構想。  \n- 感謝目前測試結果清楚、沒有模糊灰區。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n今天主要行為集中在優化股票搜尋腳本、整理測試邏輯與驗證進出場條件，其他事情被我主動延後處理。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n我正在用「測試結果還不錯」這個訊號，過早推論「這個產品會有人買」。這屬於 *confirmation bias（確認偏誤）*，我選擇性放大了支持商品化的證據，卻尚未面對市場、法規、信任成本等現實摩擦。\n\n**Blind Spot Question (盲點提問):**  \n如果這套系統三個月後績效下滑，我的收入模型還成立嗎？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「之後再想怎麼賣」來延後面對銷售與責任成本的焦慮。\n\n### ③ 強制五欄位模組\n- **[Day Summary]** 幾乎全天專注在股票搜尋系統，開始思考商品化可能。  \n- **[Signals Detected]** 測試穩定、外界副收入案例刺激。  \n- **[Behavior Path]** 寫程式、測邏輯、暫停其他任務。  \n- **[Drift Point]** 被 AI 副收入新聞牽動情緒與想像。  \n- **[Blind Spot Question]** 市場與績效波動下的可持續性？\n\n## 4. Tomorrow’s MIT\n整理並寫出一份「非技術者也看得懂」的系統使用說明草稿。\n\n## 5. Action Tip\n打開一個空白文件，90 秒內只寫三行：這個系統幫誰、省什麼時間、解決哪個痛點。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Confirmation Bias  \n- **Reframe:** 現在的穩定測試不是結論，只是「候選證據」。\n\n## 7. Tags\n#股票系統 #副收入 #產品化思考",
+      "ai_processed": "# [2026-01-07] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7（興奮中帶著一點不安）\n> - **Focus:** 8（長時間集中在單一主題）\n> - **Energy:** 7（穩定輸出型）\n> - **Action Check:** ✅\n> - **Drift Point:** 看到「小朋友用 AI 賺日薪」的新聞瞬間產生橫向分心\n\n## 1. Highlights\n**Day Summary (航行記錄):**  \n我把注意力幾乎全部投入在股票搜尋系統的建構與測試，同時開始浮現「這也許可以變成商品」的念頭。\n\n**Signals Detected (雷達回波):**  \n- 長週期選股、簡化進出場規則，讓我感到「輕鬆但有效」。  \n- 外界新聞刺激了我對副收入的想像與焦慮。\n\n## 2. Gratitude\n- 感謝自己已經實際做出樣本，而不是只停留在構想。  \n- 感謝目前測試結果清楚、沒有模糊灰區。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n今天主要行為集中在優化股票搜尋腳本、整理測試邏輯與驗證進出場條件，其他事情被我主動延後處理。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n我正在用「測試結果還不錯」這個訊號，過早推論「這個產品會有人買」。這屬於 *confirmation bias（確認偏誤）*，我選擇性放大了支持商品化的證據，卻尚未面對市場、法規、信任成本等現實摩擦。\n\n**Blind Spot Question (盲點提問):**  \n如果這套系統三個月後績效下滑，我的收入模型還成立嗎？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「之後再想怎麼賣」來延後面對銷售與責任成本的焦慮。\n\n### ③ 強制五欄位模組\n- **[Day Summary]** 幾乎全天專注在股票搜尋系統，開始思考商品化可能。  \n- **[Signals Detected]** 測試穩定、外界副收入案例刺激。  \n- **[Behavior Path]** 寫程式、測邏輯、暫停其他任務。  \n- **[Drift Point]** 被 AI 副收入新聞牽動情緒與想像。  \n- **[Blind Spot Question]** 市場與績效波動下的可持續性？\n\n## 4. Tomorrow’s MIT\n整理並寫出一份「非技術者也看得懂」的系統使用說明草稿。\n\n## 5. Action Tip\n打開一個空白文件，90 秒內只寫三行：這個系統幫誰、省什麼時間、解決哪個痛點。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Confirmation Bias  \n- **Reframe:** 現在的穩定測試不是結論，只是「候選證據」。\n\n## 7. Tags\n#股票系統 #副收入 #產品化思考",
+      "metadata": {
+        "mood": 7,
+        "focus": 8,
+        "energy": 7,
+        "tags": [],
+        "is_ai": true,
+        "ai_model": "legacy"
+      }
+    }
+  ],
+  "combined_content": "# [2026-01-07] 日記\n\n> **Daily Metrics** (系統數據區)\n> - **Mood:** 7（興奮中帶著一點不安）\n> - **Focus:** 8（長時間集中在單一主題）\n> - **Energy:** 7（穩定輸出型）\n> - **Action Check:** ✅\n> - **Drift Point:** 看到「小朋友用 AI 賺日薪」的新聞瞬間產生橫向分心\n\n## 1. Highlights\n**Day Summary (航行記錄):**  \n我把注意力幾乎全部投入在股票搜尋系統的建構與測試，同時開始浮現「這也許可以變成商品」的念頭。\n\n**Signals Detected (雷達回波):**  \n- 長週期選股、簡化進出場規則，讓我感到「輕鬆但有效」。  \n- 外界新聞刺激了我對副收入的想像與焦慮。\n\n## 2. Gratitude\n- 感謝自己已經實際做出樣本，而不是只停留在構想。  \n- 感謝目前測試結果清楚、沒有模糊灰區。\n\n## 3. Reflection\n**Behavior Path (實際路徑):**  \n今天主要行為集中在優化股票搜尋腳本、整理測試邏輯與驗證進出場條件，其他事情被我主動延後處理。\n\n**Anti-Cognitive Closure (防認知封閉):**  \n我正在用「測試結果還不錯」這個訊號，過早推論「這個產品會有人買」。這屬於 *confirmation bias（確認偏誤）*，我選擇性放大了支持商品化的證據，卻尚未面對市場、法規、信任成本等現實摩擦。\n\n**Blind Spot Question (盲點提問):**  \n如果這套系統三個月後績效下滑，我的收入模型還成立嗎？\n\n**Self-Deception Trigger（自我欺騙觸發器）:**  \n用「之後再想怎麼賣」來延後面對銷售與責任成本的焦慮。\n\n### ③ 強制五欄位模組\n- **[Day Summary]** 幾乎全天專注在股票搜尋系統，開始思考商品化可能。  \n- **[Signals Detected]** 測試穩定、外界副收入案例刺激。  \n- **[Behavior Path]** 寫程式、測邏輯、暫停其他任務。  \n- **[Drift Point]** 被 AI 副收入新聞牽動情緒與想像。  \n- **[Blind Spot Question]** 市場與績效波動下的可持續性？\n\n## 4. Tomorrow’s MIT\n整理並寫出一份「非技術者也看得懂」的系統使用說明草稿。\n\n## 5. Action Tip\n打開一個空白文件，90 秒內只寫三行：這個系統幫誰、省什麼時間、解決哪個痛點。\n\n## 6. Cognitive Lens Reframing (思維透鏡)\n- **Model/Concept:** Confirmation Bias  \n- **Reframe:** 現在的穩定測試不是結論，只是「候選證據」。\n\n## 7. Tags\n#股票系統 #副收入 #產品化思考",
+  "created_at": "2026-01-20T01:59:26.639000",
+  "updated_at": "2026-02-17T22:45:08.642653"
+}

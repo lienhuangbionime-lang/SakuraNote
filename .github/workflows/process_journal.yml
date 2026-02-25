@@ -1,0 +1,91 @@
+name: Process Journal Entry
+
+on:
+  repository_dispatch:
+    types: [new_journal_entry]
+  workflow_dispatch:
+    inputs:
+      journal_text:
+        description: 'Journal Content'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  # Job 1: 資料落地與 AI 解析
+  secure_data:
+    runs-on: ubuntu-latest
+    outputs:
+      new_sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - name: Checkout content
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: pip install google-generativeai python-frontmatter
+
+      - name: 🧠 Neural Intake
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          JOURNAL_TEXT: ${{ github.event.client_payload.text || github.event.inputs.journal_text }}
+        run: python src/actions/process_inbox.py
+
+      - name: Commit Raw Entry
+        id: commit
+        run: |
+          git config --global user.name "LifeOS Bot"
+          git config --global user.email "bot@lifeos.ai"
+          git add data/inbox/
+          git commit -m "📝 Log Entry" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push origin main
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+  # Job 2: 處理與歸檔
+  process_data:
+    needs: secure_data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout content
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.secure_data.outputs.new_sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install pandas pyarrow python-frontmatter requests google-auth google-api-python-client
+
+      - name: 🔀 Run Dual-Track Splitter
+        continue-on-error: true
+        run: python src/actions/classify_inbox.py
+
+      - name: ✅ Sync Tasks (Loop Version)
+        continue-on-error: true
+        env:
+          ZAPIER_TASK_WEBHOOK: ${{ secrets.ZAPIER_TASK_WEBHOOK }}
+        run: python src/actions/sync_tasks.py
+
+      - name: 🗜️ Compaction & Cleanup
+        run: python src/actions/compact_inbox.py
+
+      - name: Commit System State
+        run: |
+          git config --global user.name "LifeOS Bot"
+          git config --global user.email "bot@lifeos.ai"
+          git add data/
+          git commit -m "⚙️ Processed" || echo "No changes"
+          # [核心修復] 解決 Detached HEAD 問題
+          git push origin HEAD:main
